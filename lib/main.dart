@@ -1,4 +1,7 @@
+import 'package:class_mobx_nocodegen/counter_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,12 +30,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final store = CounterStore();
+  ReactionDisposer? disposer;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  void initState() {
+    disposer = reaction((_) => store.value, (value) {
+      print(value);
     });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    disposer!();
+    super.dispose();
   }
 
   @override
@@ -48,15 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Observer(builder: (_) {
+              return Text(
+                '${store.value}',
+                style: Theme.of(context).textTheme.headline4,
+              );
+            }),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: store.increment,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
