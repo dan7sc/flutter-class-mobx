@@ -36,35 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     disposer = reaction((_) => store.value, (int value) {
-        if(value % 2 != 0) {
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-              builder: (context) => Center(
-                child: Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Seu valor :${store.value} é ímpar!',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          'Ok',
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          );
-        }
+      if (value % 2 != 0) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+        Future.delayed(Duration(seconds: 2))
+            .then((value) => Navigator.pop(context));
+      }
     });
     super.initState();
   }
