@@ -9,6 +9,14 @@ part of 'counter_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CounterStore on CounterStoreBase, Store {
+  Computed<int>? _$duplicateValueComputed;
+
+  @override
+  int get duplicateValue =>
+      (_$duplicateValueComputed ??= Computed<int>(() => super.duplicateValue,
+              name: 'CounterStoreBase.duplicateValue'))
+          .value;
+
   final _$valueAtom = Atom(name: 'CounterStoreBase.value');
 
   @override
@@ -39,9 +47,21 @@ mixin _$CounterStore on CounterStoreBase, Store {
   }
 
   @override
+  void decrement() {
+    final _$actionInfo = _$CounterStoreBaseActionController.startAction(
+        name: 'CounterStoreBase.decrement');
+    try {
+      return super.decrement();
+    } finally {
+      _$CounterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-value: ${value}
+value: ${value},
+duplicateValue: ${duplicateValue}
     ''';
   }
 }
