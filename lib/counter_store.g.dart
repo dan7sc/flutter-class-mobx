@@ -17,6 +17,21 @@ mixin _$CounterStore on CounterStoreBase, Store {
               name: 'CounterStoreBase.userAndPasswordValid'))
       .value;
 
+  final _$appStatusAtom = Atom(name: 'CounterStoreBase.appStatus');
+
+  @override
+  AppStatus get appStatus {
+    _$appStatusAtom.reportRead();
+    return super.appStatus;
+  }
+
+  @override
+  set appStatus(AppStatus value) {
+    _$appStatusAtom.reportWrite(value, super.appStatus, () {
+      super.appStatus = value;
+    });
+  }
+
   final _$_userAtom = Atom(name: 'CounterStoreBase._user');
 
   @override
@@ -47,6 +62,13 @@ mixin _$CounterStore on CounterStoreBase, Store {
     });
   }
 
+  final _$loginAsyncAction = AsyncAction('CounterStoreBase.login');
+
+  @override
+  Future<void> login() {
+    return _$loginAsyncAction.run(() => super.login());
+  }
+
   final _$CounterStoreBaseActionController =
       ActionController(name: 'CounterStoreBase');
 
@@ -75,6 +97,7 @@ mixin _$CounterStore on CounterStoreBase, Store {
   @override
   String toString() {
     return '''
+appStatus: ${appStatus},
 userAndPasswordValid: ${userAndPasswordValid}
     ''';
   }

@@ -35,19 +35,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // disposer = reaction((_) => store.value, (int value) {
-    //   if (value % 2 != 0) {
-    //     showDialog(
-    //       barrierDismissible: false,
-    //       context: context,
-    //       builder: (context) => Center(
-    //         child: CircularProgressIndicator(),
-    //       ),
-    //     );
-    //     Future.delayed(Duration(seconds: 2))
-    //         .then((value) => Navigator.pop(context));
-    //   }
-    // });
+    disposer = reaction((_) => store.appStatus, (AppStatus status) {
+      if (status == AppStatus.loading) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      } else if (status == AppStatus.success) {
+        Navigator.pop(context);
+      } else if (status == AppStatus.error) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => Center(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Usuário ou senha inválidos"),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text("Entendi!"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+    });
     super.initState();
   }
 
@@ -90,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (_) {
                 return Expanded(
                   child: ElevatedButton(
-                    onPressed: store.userAndPasswordValid ? () {} : null,
+                    onPressed: store.userAndPasswordValid ? () => store.login() : null,
                     child: Text("Entrar"),
                   ),
                 );
