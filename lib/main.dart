@@ -35,8 +35,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    disposer = reaction((_) => store.value, (value) {
-      print(value);
+    disposer = reaction((_) => store.value, (int value) {
+        if(value % 2 != 0) {
+          showAboutDialog(
+            context: context,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Seu valor :${store.value} é ímpar!',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Ok',
+                  style: Theme.of(context).textTheme.button,
+                ),
+              ),
+            ],
+          );
+        }
     });
     super.initState();
   }
