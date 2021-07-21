@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     disposer = reaction((_) => store.value, (int value) {
         if(value % 2 != 0) {
           showDialog(
+            barrierDismissible: false,
             context: context,
               builder: (context) => Center(
                 child: Card(
