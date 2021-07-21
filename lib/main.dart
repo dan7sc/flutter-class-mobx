@@ -35,19 +35,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    disposer = reaction((_) => store.value, (int value) {
-      if (value % 2 != 0) {
-        // showDialog(
-        //   barrierDismissible: false,
-        //   context: context,
-        //   builder: (context) => Center(
-        //     child: CircularProgressIndicator(),
-        //   ),
-        // );
-        // Future.delayed(Duration(seconds: 2))
-        //     .then((value) => Navigator.pop(context));
-      }
-    });
+    // disposer = reaction((_) => store.value, (int value) {
+    //   if (value % 2 != 0) {
+    //     showDialog(
+    //       barrierDismissible: false,
+    //       context: context,
+    //       builder: (context) => Center(
+    //         child: CircularProgressIndicator(),
+    //       ),
+    //     );
+    //     Future.delayed(Duration(seconds: 2))
+    //         .then((value) => Navigator.pop(context));
+    //   }
+    // });
     super.initState();
   }
 
@@ -63,43 +63,41 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Observer(builder: (_) {
-              return Text(
-                '${store.value}',
-                style: Theme.of(context).textTheme.headline4,
-              );
-            }),
-            Observer(builder: (_) {
-              return Text(
-                '${store.duplicateValue}',
-                style: Theme.of(context).textTheme.headline4,
-              );
-            }),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(hintText: "Usuário"),
+                onChanged: store.setUser,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: "Senha"),
+                onChanged: store.setPassword,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          FloatingActionButton(
-            onPressed: store.decrement,
-            tooltip: 'Increment',
-            child: Icon(Icons.remove),
-          ),
-          FloatingActionButton(
-            onPressed: store.increment,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ),
-        ],
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Observer(
+              builder: (_) {
+                return Expanded(
+                  child: ElevatedButton(
+                    onPressed: store.userAndPasswordValid ? () {} : null,
+                    child: Text("Entrar"),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

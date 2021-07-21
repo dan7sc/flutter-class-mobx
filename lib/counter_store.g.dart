@@ -9,26 +9,41 @@ part of 'counter_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CounterStore on CounterStoreBase, Store {
-  Computed<int>? _$duplicateValueComputed;
+  Computed<bool>? _$userAndPasswordValidComputed;
 
   @override
-  int get duplicateValue =>
-      (_$duplicateValueComputed ??= Computed<int>(() => super.duplicateValue,
-              name: 'CounterStoreBase.duplicateValue'))
-          .value;
+  bool get userAndPasswordValid => (_$userAndPasswordValidComputed ??=
+          Computed<bool>(() => super.userAndPasswordValid,
+              name: 'CounterStoreBase.userAndPasswordValid'))
+      .value;
 
-  final _$valueAtom = Atom(name: 'CounterStoreBase.value');
+  final _$_userAtom = Atom(name: 'CounterStoreBase._user');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  String get _user {
+    _$_userAtom.reportRead();
+    return super._user;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set _user(String value) {
+    _$_userAtom.reportWrite(value, super._user, () {
+      super._user = value;
+    });
+  }
+
+  final _$_passwordAtom = Atom(name: 'CounterStoreBase._password');
+
+  @override
+  String get _password {
+    _$_passwordAtom.reportRead();
+    return super._password;
+  }
+
+  @override
+  set _password(String value) {
+    _$_passwordAtom.reportWrite(value, super._password, () {
+      super._password = value;
     });
   }
 
@@ -36,22 +51,22 @@ mixin _$CounterStore on CounterStoreBase, Store {
       ActionController(name: 'CounterStoreBase');
 
   @override
-  void increment() {
+  void setUser(String value) {
     final _$actionInfo = _$CounterStoreBaseActionController.startAction(
-        name: 'CounterStoreBase.increment');
+        name: 'CounterStoreBase.setUser');
     try {
-      return super.increment();
+      return super.setUser(value);
     } finally {
       _$CounterStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void decrement() {
+  void setPassword(String value) {
     final _$actionInfo = _$CounterStoreBaseActionController.startAction(
-        name: 'CounterStoreBase.decrement');
+        name: 'CounterStoreBase.setPassword');
     try {
-      return super.decrement();
+      return super.setPassword(value);
     } finally {
       _$CounterStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -60,8 +75,7 @@ mixin _$CounterStore on CounterStoreBase, Store {
   @override
   String toString() {
     return '''
-value: ${value},
-duplicateValue: ${duplicateValue}
+userAndPasswordValid: ${userAndPasswordValid}
     ''';
   }
 }

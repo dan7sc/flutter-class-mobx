@@ -6,18 +6,17 @@ class CounterStore = CounterStoreBase with _$CounterStore;
 
 abstract class CounterStoreBase with Store {
   @observable
-  int value = 0;
+  String _user = "";
+
+  @observable
+  String _password = "";
 
   @computed
-  int get duplicateValue => value * 2;
+  bool get userAndPasswordValid => _user.isNotEmpty && _password.isNotEmpty;
 
   @action
-  void increment() {
-    value++;
-  }
+  void setUser(String value) => _user = value;
 
   @action
-  void decrement() {
-    value--;
-  }
+  void setPassword(String value) => _password= value;
 }
